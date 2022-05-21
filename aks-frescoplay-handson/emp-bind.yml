@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: emp-bind
+  namespace: dev
+subjects:
+- kind: User
+  name: emp
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: emp-role
+  apiGroup: rbac.authorization.k8s.io

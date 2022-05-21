@@ -1,0 +1,11 @@
+#kubectl create configmap fresco-config --from-literal SERVER_URL=https://www.fresco.me
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: dev
+spec:
+  containers:
+   - name: nginx
+     image: nginx
+
