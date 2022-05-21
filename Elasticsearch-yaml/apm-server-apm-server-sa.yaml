@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+  labels:
+    app: apm-server-apm-server
+    release: apm-server
+  name: apm-server-apm-server
+  namespace: default
+secrets:
+- name: apm-server-apm-server-token

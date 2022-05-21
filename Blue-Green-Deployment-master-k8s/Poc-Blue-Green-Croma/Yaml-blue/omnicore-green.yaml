@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omnicore-green
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: omnicore
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: omnicore
+        version: v2
+    spec:
+      containers:      
+      - name: omnicore
+        image: omnistoreimages.azurecr.io/omnicoregreen:example
+        
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: azurefileshare
+          mountPath: /opt/omnistore-home/logs
+        env:
+        - name: DB_HOST
+          value: "omnicore.mysql.database.azure.com"
+        - name: DB_NAME
+          value: "omnistore_core"
+        - name: DB_USER_NAME
+          value: "omniadmin@omnicore"
+        - name: DB_USER_PASS
+          value: "omnipass_123"
+        - name: REDIS_HOST
+          value: "osms.redis.cache.windows.net"
+        - name: REDIS_PASS
+          value: "wR6GtmytChbRt0owuMtbGzTpvxs0Gq37CfCTMXMU2+o="
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 2050Mi
+        ports:
+        - containerPort: 8163
+      imagePullSecrets:
+      - name: imagepull
+      volumes:
+        - name: azurefileshare
+          azureFile:
+            secretName: microservice
+            shareName: cs-1820387-tcs-com-1003200094f9c116/blue-green/logs
+            readOnly: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: omnicore-green
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8163
+  selector:
+    app: omnicore
+    version: v2
+
+

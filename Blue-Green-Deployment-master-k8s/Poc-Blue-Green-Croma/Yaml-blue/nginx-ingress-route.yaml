@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress-route
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    #nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  #tls:
+  #- hosts:
+  #  - omnistore.retail.com
+  #  secretName: aks-ingress-tls
+  rules:
+  - host: appblue.eastus.cloudapp.azure.com
+    http: 
+        paths:
+        - path: /os-coredata(/|$)(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: omnicore
+              port:
+                number: 8163
+        
+        
+        
+        
+        
+        
+        

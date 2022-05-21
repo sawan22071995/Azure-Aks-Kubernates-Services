@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    app: elasticsearch-master
+    app.kubernetes.io/managed-by: Helm
+    release: elasticsearch
+  name: elasticsearch-master-headless
+  namespace: default
+spec:
+  ports:
+  - name: http
+    port: 9200
+    protocol: TCP
+    targetPort: 9200
+  - name: transport
+    port: 9300
+    protocol: TCP
+    targetPort: 9300
+  selector:
+    app: elasticsearch-master
+  sessionAffinity: None
+  type: ClusterIP

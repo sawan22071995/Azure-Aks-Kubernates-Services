@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aks-helloworld
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"                #for ssl enabled
+    kubernetes.io/ingress.class: addon-http-application-routing      #for https enable routing
+    #kubernetes.io/ingress.class: nginx                              #for ingress nginx routing
+    nginx.ingress.kubernetes.io/use-regex: "true"                    #for regular expression
+spec:
+  rules:
+  - host: 96f20986945d44f395a3.eastus.aksapp.io                      #host name
+    http: 
+        paths:
+        - path: /os-coredata(/|$)(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: omnicore
+              port:
+                number: 80
